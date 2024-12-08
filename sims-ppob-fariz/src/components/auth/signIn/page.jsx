@@ -12,7 +12,6 @@ const Login = () => {
         <Hero />
       </div>
     </div>
-
   )
 }
 

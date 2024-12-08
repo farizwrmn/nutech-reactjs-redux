@@ -9,11 +9,13 @@ import * as Yup from 'yup';
 import { useAppDispatch } from '@/lib/hooks';
 import { signIn } from '@/lib/features/auth/authSlice';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 
 const InnerFormLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useAppDispatch();
+  const router = useRouter();
   const initialValues = {
     email: '',
     password: '',
@@ -21,11 +23,11 @@ const InnerFormLogin = () => {
 
   const validationSchema = Yup.object({
     email: Yup.string()
-      .email('Invalid email format')
-      .required('Email is required'),
+      .email('Format Email Salah')
+      .required('Email tidak boleh kosong'),
     password: Yup.string()
-      .min(8, 'Password must be at least 8 characters')
-      .required('Password is required'),
+      .min(8, 'Password min. 8 karakter')
+      .required('Password tidak boleh kosong'),
   })
 
   const handleSubmit = async (values, { setSubmitting }) => {
@@ -33,7 +35,8 @@ const InnerFormLogin = () => {
 
     try {
       await dispatch(signIn({ email, password }));
-      console.log('Form Data Submitted:', values);
+      toast.success(`Login Berhasil, selamat datang ${email}`);
+      router.push('/dashboard');
     } catch (error) {
       toast.error(error.message);
     } finally {
