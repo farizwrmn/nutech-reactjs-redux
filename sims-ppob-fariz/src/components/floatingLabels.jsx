@@ -1,3 +1,4 @@
+import { ErrorMessage, Field } from "formik";
 import React, { useState } from "react";
 
 const FloatingInput = ({ id, label, type, variant = "outlined", email, password, onChange }) => {
@@ -15,14 +16,18 @@ const FloatingInput = ({ id, label, type, variant = "outlined", email, password,
 
   return (
     <div className="relative">
-      <input
+      <Field
         type={type}
         id={id}
         className={inputClassName[variant]}
         placeholder=" "
-        value={email || password || value}
-        onChange={onChange}
+        name={id}
         required
+      />
+      <ErrorMessage
+        name={id}
+        component="div"
+        className="text-red-500 text-sm"
       />
       <label htmlFor={id} className={labelClassName[variant]}>
         {label}
