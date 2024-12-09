@@ -44,11 +44,11 @@ export const signIn = ({ email, password }) => async (dispatch) => {
 
     localStorage.setItem('token', data?.data.token);
 
-    return true;
+    return { success: true, message: 'Login successful' };
   } catch (err) {
-    toast.error(err?.response?.data?.message);
-    console.log(err)
-    return false;
+    const errorMessage = err?.response?.data?.message || 'An error occurred';
+    toast.error(errorMessage);
+    return { success: false, message: errorMessage };
   }
 };
 

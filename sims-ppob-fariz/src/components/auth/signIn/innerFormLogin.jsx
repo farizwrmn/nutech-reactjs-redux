@@ -34,14 +34,19 @@ const InnerFormLogin = () => {
     const { email, password } = values;
 
     try {
-      await dispatch(signIn({ email, password }));
-      toast.success(`Login Berhasil`);
-      router.push('/dashboard');
+      const result = await dispatch(signIn({ email, password }));
+      if (result?.success) {
+        toast.success('Login Berhasil');
+        router.push('/dashboard');
+      } else {
+        toast.error(result?.message || 'Login Gagal, periksa email dan password Anda.');
+      }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(`Login gagal: ${error.message}`);
     } finally {
       setSubmitting(false);
     }
+
   };
 
   const togglePasswordVisibility = () => {

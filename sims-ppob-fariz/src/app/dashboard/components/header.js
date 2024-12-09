@@ -13,11 +13,15 @@ const Header = () => {
   const [loading, setLoading] = useState(true);
   const [userBalance, setUserBalance] = useState(null);
   const [showBalance, setShowBalance] = useState(false);
+  const [imageSrc, setImageSrc] = useState(user?.image || '/assets/images/Profile Photo.png');
 
   const handleShowBalance = () => {
     setShowBalance(!showBalance);
   };
 
+  const handleError = () => {
+    setImageSrc('/assets/images/Profile Photo.png');
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -63,10 +67,11 @@ const Header = () => {
     <div className='py-10 sm:px-20 px-5 grid grid-cols-1 sm:grid-cols-2 gap-4'>
       <div className='flex flex-col items-start'>
         <Image
-          src={"/assets/images/Profile Photo.png" || user?.image}
+          src={imageSrc}
           alt="Profile"
           width={100}
           height={100}
+          onError={handleError}
         />
         <p className='text-2xl py-5 font-light'>Selamat datang,</p>
         <p className='text-3xl font-semibold -mt-4'>{`${user?.firstName} ${user?.lastName}`}</p>
