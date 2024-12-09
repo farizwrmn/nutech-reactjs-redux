@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image';
 import { useDispatch } from 'react-redux';
 import { logout } from '@/lib/features/auth/authSlice';
@@ -9,6 +9,11 @@ import { useRouter } from 'next/navigation';
 const EditProfile = ({ user, isEditing, formData, handleInputChange, handleSave, handleEditClick, handleCancel, handleImageUpload, handleImageChange, loading }) => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const [imageSrc, setImageSrc] = useState(user?.image || '/assets/images/Profile Photo.png');
+
+  const handleError = () => {
+    setImageSrc('/assets/images/Profile Photo.png');
+  };
 
   const handleLogout = () => {
     dispatch(logout());
@@ -23,11 +28,12 @@ const EditProfile = ({ user, isEditing, formData, handleInputChange, handleSave,
       <div className='grid justify-center items-center my-10'>
         <div className='relative text-center'>
           <Image
-            src={"/assets/images/Profile Photo.png" || user?.image}
+            src={imageSrc}
             alt="User Image"
             width={100}
             height={100}
             className='h-full object-contain overflow-hidden rounded-full mx-auto'
+            onError={handleError}
           />
 
           <input
@@ -37,7 +43,6 @@ const EditProfile = ({ user, isEditing, formData, handleInputChange, handleSave,
             className="block"
             onChange={handleImageChange}
           />
-
           <button onClick={handleImageUpload} disabled={loading} className='bg-blue-500 text-white px-4 py-2 rounded-md'>
             {loading ? 'Uploading...' : 'Upload Image'}
           </button>
