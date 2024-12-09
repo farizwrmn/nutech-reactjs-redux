@@ -3,3 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.li {
+  list-style-type: none;
+}
