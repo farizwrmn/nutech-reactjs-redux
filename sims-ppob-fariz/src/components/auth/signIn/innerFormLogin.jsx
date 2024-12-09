@@ -35,7 +35,7 @@ const InnerFormLogin = () => {
 
     try {
       await dispatch(signIn({ email, password }));
-      toast.success(`Login Berhasil, selamat datang ${email}`);
+      toast.success(`Login Berhasil`);
       router.push('/dashboard');
     } catch (error) {
       toast.error(error.message);

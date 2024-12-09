@@ -25,6 +25,9 @@ const authSlice = createSlice({
       state.user = initialState.user;
       state.status = initialState.status;
     },
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
   },
 });
 
@@ -38,18 +41,8 @@ export const signIn = ({ email, password }) => async (dispatch) => {
       email,
       password,
     });
-    const user = data?.data.user;
-    dispatch(
-      login({
-        id: user?.id,
-        name: user?.name,
-        email: user?.email,
-        image: user?.image,
-      }),
-    );
 
     localStorage.setItem('token', data?.data.token);
-    localStorage.setItem('user', JSON.stringify(user));
 
     return true;
   } catch (err) {
@@ -59,5 +52,5 @@ export const signIn = ({ email, password }) => async (dispatch) => {
   }
 };
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, setUser } = authSlice.actions;
 export default authSlice.reducer;
