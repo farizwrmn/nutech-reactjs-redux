@@ -7,9 +7,52 @@ import React, { useEffect, useState } from 'react'
 const Services = () => {
   const [services, setServices] = useState([]);
   const [showAll, setShowAll] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(0);
 
-  const visibleServices = showAll || window.innerWidth >= 640 ? services : services.slice(0, 8);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Set initial window width on mount
+      setWindowWidth(window.innerWidth);
 
+      // Update window width on resize
+      const handleResize = () => setWindowWidth(window.innerWidth);
+
+      window.addEventListener('resize', handleResize);
+
+      // Clean up event listener when the component is unmounted
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      if (typeof window !== 'undefined') {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('User not logged in');
+        }
+
+        try {
+          const response = await instance.get('/services', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response?.data?.status === 0) {
+            setServices(response.data?.data);
+          }
+        } catch (error) {
+          console.error('Error fetching services:', error);
+        }
+        setLoading(false);
+      }
+    };
+
+    fetchServices();
+  }, []);
+
+  const visibleServices = showAll || windowWidth >= 640 ? services : services.slice(0, 8);
 
   useEffect(() => {
     const fetchServices = async () => {
