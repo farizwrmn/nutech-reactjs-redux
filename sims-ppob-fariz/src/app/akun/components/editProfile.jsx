@@ -5,8 +5,9 @@ import Image from 'next/image';
 import { useDispatch } from 'react-redux';
 import { logout } from '@/lib/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
+import LoadingScreen from '@/components/loading';
 
-const EditProfile = ({ user, isEditing, formData, handleInputChange, handleSave, handleEditClick, handleCancel, handleImageUpload, handleImageChange, loading }) => {
+const EditProfile = ({ user, isEditing, formData, handleInputChange, handleSave, handleEditClick, handleCancel, handleImageUpload, handleImageChange, loading, setProfileImage }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [imageSrc, setImageSrc] = useState(user?.image || '/assets/images/Profile Photo.png');
@@ -17,10 +18,22 @@ const EditProfile = ({ user, isEditing, formData, handleInputChange, handleSave,
 
   const handleLogout = () => {
     dispatch(logout());
-
     localStorage.clear();
-
     router.push('/');
+  };
+
+  // Function to handle the image upload
+  const handleImageUploadClick = async () => {
+    try {
+      // Start uploading process
+      await handleImageUpload(); // Assuming this method handles the image upload and updates the server.
+
+      // Set the profile image immediately after the upload
+      setImageSrc(user?.image || '/assets/images/Profile Photo.png'); // Update the profile image immediately after upload
+
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
   };
 
   return (
@@ -43,25 +56,13 @@ const EditProfile = ({ user, isEditing, formData, handleInputChange, handleSave,
             className="block"
             onChange={handleImageChange}
           />
-          <button onClick={handleImageUpload} disabled={loading} className='bg-blue-500 text-white px-4 py-2 rounded-md'>
+          <button
+            onClick={handleImageUploadClick} // Updated method for image upload
+            disabled={loading} // Disable button while uploading
+            className={`bg-blue-500 text-white px-4 py-2 rounded-md ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+          >
             {loading ? 'Uploading...' : 'Upload Image'}
           </button>
-
-          <p className='text-3xl font-semibold text-slate-800 mt-4'>
-            {isEditing ? (
-              <>
-                <input
-                  type="text"
-                  name="first_name"
-                  value={formData.first_name}
-                  onChange={handleInputChange}
-                  className="border p-1 rounded-md w-full text-center"
-                />
-              </>
-            ) : (
-              `${user?.firstName} ${user?.lastName}`
-            )}
-          </p>
         </div>
       </div>
 
@@ -147,4 +148,4 @@ const EditProfile = ({ user, isEditing, formData, handleInputChange, handleSave,
   )
 }
 
-export default EditProfile
+export default EditProfile;

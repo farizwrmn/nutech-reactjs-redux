@@ -5,6 +5,7 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { setUser } from '@/lib/features/auth/authSlice';
 import { getUserBalance, getUserDetails } from '@/services/user.service';
+import LoadingScreen from '@/components/loading';
 
 
 const Header = () => {
@@ -59,7 +60,9 @@ const Header = () => {
 
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <LoadingScreen loading={loading} />
+    );
   }
 
 

@@ -30,8 +30,8 @@ const SlideBanner = () => {
       <div className='justify-start'>
         <p className='sm:text-xl font-semibold my-10'>Temukan promo menarik</p>
       </div>
-      <div className='overflow-x-auto no-scrollbar'>
-        <ul className="flex gap-4 sm:w-fit">
+      <div className="overflow-x-auto no-scrollbar">
+        <ul className="flex gap-4 w-max">
           {banner.map((banner) => (
             <li
               key={banner.banner_name}
@@ -40,12 +40,13 @@ const SlideBanner = () => {
               <img
                 src={banner.banner_image}
                 alt={banner.banner_name}
-                className="banner-image w-full h-full sm:max-w-full sm:h-[200px] lg:max-w-[500px] lg:h-auto"
+                className="banner-image w-full h-full max-w-[500px] sm:max-w-[600px] sm:h-[300px] lg:max-w-[500px] lg:h-auto"
               />
             </li>
           ))}
         </ul>
       </div>
+
     </div>
   )
 }

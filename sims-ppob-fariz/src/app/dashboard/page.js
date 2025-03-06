@@ -13,7 +13,7 @@ const Dashboard = () => {
       <div className='sm:px-10'>
         <Header />
       </div>
-      <div className='sm:px-10 px-5'>
+      <div className='sm:px-20 px-0'>
         <Services />
       </div>
       <div className='sm:px-10 px-0'>

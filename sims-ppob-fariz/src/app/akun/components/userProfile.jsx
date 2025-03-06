@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react'
 import EditProfile from './editProfile';
 import { updateUserProfile, uploadImage } from '@/services/profile.service';
 import { toast } from 'react-toastify';
+import LoadingScreen from '@/components/loading';
 
 const UserProfile = () => {
   const dispatch = useAppDispatch();
@@ -15,7 +16,7 @@ const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [image, setImage] = useState(null);
-  const [profileImage, setProfileImage] = useState('/assets/images/Profile Photo.png');
+  const [profileImage, setProfileImage] = useState(user?.image || '/assets/images/Profile Photo.png');  // Initialize with user image
   const [formData, setFormData] = useState({
     first_name: user?.firstName || '',
     last_name: user?.lastName || '',
@@ -34,15 +35,17 @@ const UserProfile = () => {
 
   const handleEditClick = () => setIsEditing(true);
 
-  const handleEditPhotoClick = () => {
-    document.getElementById('fileInput').click();
-  };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImage(file);
+    }
+  };
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -62,12 +65,10 @@ const UserProfile = () => {
         last_name: lastName,
         email,
       });
-
     } else {
       router.push('/');
     }
     setLoading(false);
-
   }, [dispatch, router]);
 
   const handleSave = async () => {
@@ -83,13 +84,6 @@ const UserProfile = () => {
     }
   };
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setImage(file);
-    }
-  };
-
   const handleImageUpload = async () => {
     if (!image) {
       toast.error('Please select an image first.');
@@ -100,26 +94,25 @@ const UserProfile = () => {
     formData.append('file', image);
 
     try {
+      setLoading(true);  // Show loading spinner while uploading
       const result = await uploadImage(formData);
 
       if (result.success) {
-        setProfileImage(result.profileImage);
+        setProfileImage(result.profileImage);  // Update the profile image state
         toast.success('Image uploaded successfully!');
       } else {
         toast.error(result.message);
       }
-
     } catch (err) {
-      toast.error(err);
+      toast.error('Error uploading image');
+    } finally {
+      setLoading(false);  // Hide loading spinner
     }
-
-    setLoading(false);
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingScreen loading={loading} />;
   }
-
 
   return (
     <div>
@@ -130,14 +123,15 @@ const UserProfile = () => {
         handleInputChange={handleInputChange}
         handleSave={handleSave}
         handleEditClick={handleEditClick}
-        handleEditPhotoClick={handleEditPhotoClick}
         handleCancel={handleCancel}
         handleImageUpload={handleImageUpload}
         handleImageChange={handleImageChange}
+        profileImage={profileImage}  // Pass profile image as prop to EditProfile
+        setProfileImage={setProfileImage}  // Pass setter for profile image
         loading={loading}
       />
     </div>
   )
 }
 
-export default UserProfile
+export default UserProfile;

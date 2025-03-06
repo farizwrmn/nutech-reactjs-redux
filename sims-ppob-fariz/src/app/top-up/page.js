@@ -5,7 +5,7 @@ import UserInput from './components/userInput'
 
 const Page = () => {
   return (
-    <div className=''>
+    <div className='mb-20'>
       <div className=''>
         <Navbar />
       </div>

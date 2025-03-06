@@ -13,7 +13,7 @@ const MobileNavbar = () => {
   };
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-800 md:dark:bg-gray-900 w-full border-b-2 p-5">
+    <div className="bg-gray-50 w-full border-b-2 p-5">
       <div className="max-w-screen-xl flex items-center justify-between mx-auto">
         <Link href="/dashboard">
           <div className="flex items-center">
@@ -23,7 +23,7 @@ const MobileNavbar = () => {
         </Link>
         <button
           onClick={toggleNavbar}
-          className="inline-flex items-center p-2 w-10 h-10 justify-center text-xl bg-slate-100 text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+          className="inline-flex items-center p-2 w-10 h-10 justify-center text-xl bg-slate-100 text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
           aria-controls="navbar-default"
           aria-expanded={isOpen}
         >
@@ -31,16 +31,16 @@ const MobileNavbar = () => {
           {isOpen ? '✖' : '☰'}
         </button>
         <div
-          className={`${isOpen ? 'block' : 'hidden'} absolute top-20 left-0 w-full bg-gray-50 dark:bg-gray-800 z-50 md:relative md:top-auto md:left-auto md:block md:w-auto md:bg-transparent md:dark:bg-transparent`}
+          className={`${isOpen ? 'block' : 'hidden'} absolute top-20 left-0 w-full bg-gray-50 z-50 md:relative md:top-auto md:left-auto md:block md:w-auto md:bg-transparent`}
           id="navbar-default"
         >
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 md:mt-0 border md:border-0 border-gray-100 rounded-lg md:rounded-none bg-gray-50 md:bg-transparent dark:bg-gray-800 md:dark:bg-transparent dark:border-gray-700 md:flex-row md:space-x-8 rtl:space-x-reverse">
+          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 md:mt-0 border md:border-0 border-gray-100 rounded-lg md:rounded-none bg-gray-50 md:bg-transparent md:flex-row md:space-x-8 rtl:space-x-reverse">
             {Object.values(Links).map(({ href, label, icon }) => (
               <li key={label}>
                 <div className='flex align-middle'>
                   <Link
                     href={href}
-                    className="w-full block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                    className="w-full block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
                   >
                     {icon && <span className="mr-2 mt-2">{icon}</span>}
                     {label}
